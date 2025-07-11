@@ -1,0 +1,541 @@
+  <% layout("/layouts/boilerplate.ejs")%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhD Assistance</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #FFD3AC, #FFB5AB);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* Header */
+    header {
+      background-color: #fff;
+      padding: 15px 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #8B4513;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    nav a {
+      color: #5a3a1e;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+      color: #8B4513;
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      padding: 30px;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .contact-box {
+      background: #fff;
+      width: 300px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+      color: #5a3a1e;
+      flex-shrink: 0;
+    }
+
+    .contact-box p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .contact-box b {
+      color: #000;
+    }
+
+    .contact-box a {
+      color: #5a3a1e;
+      text-decoration: underline;
+    }
+
+    .order-button {
+      background-color:#8B4513;
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .order-button:hover {
+      background-color: #b71c1c;
+    }
+
+  
+
+    /* FAQ Section */
+    .faq-section {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: left;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #8B4513;
+    }
+
+    details {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      color: #5a3a1e;
+    }
+
+    details summary {
+      font-weight: bold;
+      font-size: 1.05rem;
+      color: #5a3a1e;
+      list-style: none;
+    }
+
+    details summary::marker {
+      display: none;
+    }
+
+    details[open] summary::after {
+      content: " ▲";
+      float: right;
+      color: #A0522D;
+    }
+
+    details summary::after {
+      content: " ▼";
+      float: right;
+      color: #8B4513;
+    }
+
+    details p {
+      margin-top: 0.6rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #fff;
+      text-align: center;
+      padding: 20px 10px;
+      color: #5a3a1e;
+      font-size: 0.9rem;
+      border-top: 1px solid #e0c1b3;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .social-icons {
+      margin-bottom: 12px;
+    }
+
+    .social-icons a {
+      color: #8B4513;
+      margin: 0 10px;
+      font-size: 1.3rem;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #A0522D;
+    }
+
+    .footer-links {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #5a3a1e;
+      margin: 0 8px;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+      color: #8B4513;
+    }
+
+    footer p {
+      margin-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .contact-box,
+      .main-content {
+        width: 100%;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .faq-section {
+        padding: 0 10px;
+      }
+    }
+       .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 25px 20px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .flip-front img {
+      width: 50px;
+      margin-bottom: 15px;
+    }
+
+    .flip-front h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .flip-front p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #333;
+    }
+
+    .flip-back h4 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #e60023;
+    }
+
+    .flip-back p {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #444;
+    }
+
+    @media (max-width: 600px) {
+      .flip-inner {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Contact Info Box -->
+    <div class="contact-box">
+      <p><b>Email:</b> <a href="mailto:info@phdassistance.com">info@phdassistance.com</a></p>
+      <p><b>For New Enquiries:</b> Mr. Vinoth, <a href="mailto:info@phdassistance.com">info@phdassistance.com</a></p>
+      <p><b>For Feedback:</b> <a href="mailto:feedback@phdassistance.com">feedback@phdassistance.com</a></p>
+      <p><b>Customer Care:</b> +91-9384672299</p>
+      <button class="order-button" type="submit" href="">Place Your Order Now</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <h2>Welcome to PhD Assistance</h2>
+      <p>Your trusted guide in research, education, and beyond. Here you can access our services, explore programs, or get help with your academic journey.</p>
+    </div>
+  </div>
+
+<div class="main-content">
+      <h2> Our Guarantee</h2>
+      <h2>What We promise, we deliver exactly the same</h2>
+      <p>PhD. Assistance Research Lab assists in framing the PhD research proposal as per the standard university guidelines. We have assisted researchers pursuing their PhD from universities across the globe, such as the UK, the USA, Netherlands, Australia, UAE, Dubai, Kenya, Nigeria, China, Russia and many more countries. We are aware of the guidelines set by different universities and strictly follow the same.
+Further, we are aware of the plagiarism tolerance policy and therefore strive to ensure that all the papers sent to our clients are original. Our Qualified and experienced writers/researchers ensure to deliver your work with 100%confidentiality, on-time delivery, and 100% match with the initial requirement
+</p>
+  <ul>
+    <li>Plagiarism Free</li>
+    <li>On-time delivery</li>
+    <li>Subject Matter Expertise</li>
+    <li>Communicate with your writer</li>
+    <li>Updated academic resources</li>
+    <li>Free research articles supply</li>
+    <!-- <li>References</li> -->
+  </ul>
+    </div>
+  </div>
+  <div >
+<div class="cards">
+  <div class="grid-container">
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/3050/3050525.png" alt="Dissertation">
+          <h3>Dissertation Services</h3>
+          <p>Re-writing the complete or part of your dissertation</p>
+        </div>
+        <div class="flip-back">
+          <h4>Full Dissertation Help</h4>
+          <p>Assistance from topic selection to conclusion — including rewriting, structuring, literature review, and referencing for any discipline.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/3565/3565418.png" alt="Publication">
+          <h3>Publication Support</h3>
+          <p>Support includes journal selection and formatting</p>
+        </div>
+        <div class="flip-back">
+          <h4>Journal Targeting</h4>
+          <p>Identify suitable journals, format the paper, write cover letters, and ensure compliance with submission requirements.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/2191/2191535.png" alt="Stats">
+          <h3>Statistical Analysis</h3>
+          <p>Data science is the core of research</p>
+        </div>
+        <div class="flip-back">
+          <h4>Quantitative & Qualitative</h4>
+          <p>Help with SPSS, R, STATA, NVivo, MATLAB for both descriptive and inferential statistical methods including hypothesis testing.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/3142/3142530.png" alt="Algorithm">
+          <h3>Coding & Algorithm Services</h3>
+          <p>Develop novel algorithms for your research</p>
+        </div>
+        <div class="flip-back">
+          <h4>Custom Solutions</h4>
+          <p>Develop simulation models, algorithmic prototypes using Python, MATLAB, Java or C++, based on your research gap.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135763.png" alt="Data Collection">
+          <h3>Data Collection</h3>
+          <p>Survey tool development, hosting & support</p>
+        </div>
+        <div class="flip-back">
+          <h4>Smart Data Gathering</h4>
+          <p>We offer online surveys, structured interviews, and field data collection tailored to your academic research goals.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Editing">
+          <h3>Editing & Peer Reviewing</h3>
+          <p>Manuscript editing by experts</p>
+        </div>
+        <div class="flip-back">
+          <h4>Publication-Ready Papers</h4>
+          <p>Grammatical, structural, formatting, and plagiarism checks with professional editing to meet journal expectations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="Research Support">
+          <h3>Research Support Service</h3>
+          <p>Help in rewriting or extending dissertation</p>
+        </div>
+        <div class="flip-back">
+          <h4>Complete Research Assistance</h4>
+          <p>Receive guidance across the research lifecycle, including design, implementation, analysis, and defense preparation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="https://cdn-icons-png.flaticon.com/512/1869/1869593.png" alt="Course Work">
+          <h3>Course Work</h3>
+          <p>Perfect research papers every time</p>
+        </div>
+        <div class="flip-back">
+          <h4>Academic Excellence</h4>
+          <p>We assist with coursework assignments, term papers, seminar reports and critical literature evaluations aligned with university standards.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cards">
+    <!-- <h2>Hear from people who have experienced our services</h2> -->
+  <div class="row mb-8 offset-2">
+    <h2>Hear from people who have experienced our services</h2>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2>Quality Deliverable</h2>
+          <p class="card-text">“I am very pleased with PhD Assistance's Video Abstract service. PhD Assistance provided high-quality service and cleared my worries about the document quality.”</p>
+          <p class="text-gray-500 text-xs">– Kate Merkel-Hess, Manchester<br>ID: 18HMD080 | Journal Formatting</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2>Affordable Pricing</h2>
+          <p class="card-text">“I fully admire PhD Assistance’s reputation and quality. I especially chose PhD Assistance’s packages as no other company offers such a service. Their service quality and timely delivery is very helpful in meeting journal deadlines.”</p>
+          <p class="text-gray-500 text-xs"> Rory K., Lincoln, 19HMD067<br>Video Byte and Abstract</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2>Trust</h2>
+          <p class="card-text">“PhD Assistance allocated an expert to do the submission work for me. The communication was very smooth. I was surprised that the submission process was completed within 2 days. I appreciate the support team for their good work.”</p>
+          <p class="text-gray-500 text-xs">– Salim Al-Gailani, Kuwait<br>ID: 17HMD068 | Journal Submission</p>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+</div>
+ <!-- FAQ Section -->
+  <div class="cards">
+  <section class="faq-section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <details>
+      <summary>What services do you offer for PhD students?</summary>
+      <p>We assist with research proposals, literature reviews, thesis writing, data analysis, journal publication, and more.</p>
+    </details>
+
+    <details>
+      <summary>Are your services confidential?</summary>
+      <p>Yes. We maintain complete confidentiality and never share your data or work with third parties.</p>
+    </details>
+
+    <details>
+      <summary>Can I choose my own guide or mentor?</summary>
+      <p>Yes, you can choose from our team or recommend someone, and we’ll coordinate accordingly.</p>
+    </details>
+
+    <details>
+      <summary>Do you help with journal publication?</summary>
+      <p>Yes, we help select suitable journals, format manuscripts, and support you during revisions and resubmissions.</p>
+    </details>
+
+    <details>
+      <summary>Is there support available for international students?</summary>
+      <p>Absolutely! We help with university applications, SOP writing, documentation, and editing support tailored for international standards.</p>
+    </details>
+  </section>
+  </div>
+
+</body>
+</html>

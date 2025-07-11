@@ -1,0 +1,32 @@
+<% layout("/layouts/boilerplate.ejs")%>
+<!-- <div class="main-content"> -->
+<div class="mb-4">
+  <h1 style="color: #8B4513; margin-left:2rem; margin-top:2rem;"><%= country.name.toUpperCase() %></h1>
+  <div class="main-content">
+  <h2>Description</h2>
+  <p ><%= country.description %></p>
+   </div>
+ <img src="<%= country.image%>" class="card-img-top uni-card" alt="image">
+
+ <div class="main-content">
+ <h2>Visa</h2>
+  <p><%= country.visa %></p>
+  </div>
+  <div class="cards">
+  <h2>Universities</h2>
+  <div class="row">
+    <% country.universities.forEach(university => { %>
+      <div class="col-md-4">
+        <div class="card university h-100">
+          <img src="<%= university.uniImg %>" alt="<%= university.uniName %>" class="card-img-top uni-card" height="200" style="object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title"><%= university.uniName %></h5>
+            <p class="card-text"><%= university.uniInfo %></p>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  </div>
+</div>
+<!-- </div> -->

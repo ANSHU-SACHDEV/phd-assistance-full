@@ -1,0 +1,51 @@
+<% layout("/layouts/boilerplate.ejs")%>
+<div class="container row justify-content-center ">
+<div class="mb-4 mt-4 col-5 colorown">
+  <h1 class="mt-4">Enter your information</h1>
+  <!-- <% if (success && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <%= success[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %> -->
+<form action="/contact" class="needs-validation" method="POST" novalidate>
+  <label for="name" class="form-label">Name</label>
+  <input name="name" class="form-control" placeholder="Enter your name" required>
+  <label for="phone" class="form-label">Phone</label>
+  <div>
+    <!-- <label for="phone" class="form-label">Phone</label> -->
+  <div class="input-group">
+    <span class="input-group-text">+91</span>
+    <input type="tel" name="phone" class="form-control" id="phone" placeholder="Enter your phone number"required>
+  </div>
+  </div>
+    <label for="email" class="form-label">Email</label>
+  <input name="email"  class="form-control" placeholder="Enter your email" required>
+    <label for="country" class="form-label">Country</label>
+    <select class="form-select" name="country" required>
+  <option selected>Select your country</option>
+  <option value="USA">USA</option>
+  <option value="UK">UK</option>
+  <option value="Ireland">Ireland</option>
+  <option value="NewZealand">NewZealand</option>
+  <option value="Australia">Australia</option>
+   <option value="Germany">Germany</option>
+
+</select>
+  <!-- <input name="country" class="form-control" placeholder="Enter your country"> -->
+   <label for="order" class="form-label">Order</label>
+   <textarea class="form-control" name="order" required></textarea required>
+    <label for="requirements" class="form-label">Requirements</label>
+ <textarea class="form-control" name="requirements" required></textarea required>
+  <div class="popup d-grid gap-2 col-6 mx-auto" onclick="myFunction()"> 
+  <button type="submit" class="btn bttn mt-4 mb-4 ">Submit</button>
+   
+  <span class="popuptext" id="myPopup">data submitted!</span>
+</div>
+
+
+
+</form>
+</div>
+</div>
+
