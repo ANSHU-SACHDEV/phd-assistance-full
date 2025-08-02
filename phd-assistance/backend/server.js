@@ -16,6 +16,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/countrySignup')
   .then(() => console.log("✅ Connected to DB"))
   .catch((err) => console.log("❌ DB Error:", err));
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 
 // app.use((req, res, next) => {
