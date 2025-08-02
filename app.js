@@ -1,3 +1,5 @@
+console.log("🚀 app.js started from:", __dirname);
+
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
@@ -23,6 +25,8 @@ main().catch(err => console.log(err));
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
+// app.set("views", path.join(__dirname, "..", "views"));
+
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.engine('ejs',ejsMate);
@@ -37,6 +41,11 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash());
+app.get("/", (req, res) => {
+  console.log("✅ / route hit");
+  res.send("✅ Server is working properly");
+});
+
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   next();
@@ -45,15 +54,17 @@ app.use((req,res,next)=>{
 
 app.get("/home",(req,res)=>{
   // res.send("hi, i'm root");
-  res.render("./phd_web/home");
+  res.render("phd_web/home");
 });
 
 app.get("/about",(req,res)=>{
-  res.render("./phd_web/about");
+  // res.render("./phd_web/about");
+  console.log("➡️ /about route hit");
+  res.render("phd_web/about");
 });
 
 app.get("/country",(req,res)=>{
-  res.render("./phd_web/countryList");
+  res.render("phd_web/countryList");
 });
 
 app.get("/country/:name",async(req,res)=>{
@@ -62,20 +73,20 @@ app.get("/country/:name",async(req,res)=>{
   if(!country){
     return res.status(404).send("Country not found");
   }
-  res.render("./phd_web/country",{country});
+  res.render("phd_web/country",{country});
 
 });
 
 app.get("/contact", (req, res) => {
-  res.render("./phd_web/contact");
+  res.render("phd_web/contact");
 });
 
 app.get("/privacy",(req,res)=>{
-  res.render("./phd_web/privacy");
+  res.render("phd_web/privacy");
 });
 
 app.get("/terms",(req,res)=>{
-  res.render("./phd_web/terms");
+  res.render("phd_web/terms");
 })
 
 
@@ -95,15 +106,15 @@ app.get('/signup', (req, res) => {
 });
 
 app.get("/engineering",(req,res)=>{
-  res.render("./phd_web/courses/engineering");
+  res.render("phd_web/courses/engineering");
 });
 
 app.get("/humanities",(req,res)=>{
-  res.render("./phd_web/courses/humanities");
+  res.render("phd_web/courses/humanities");
 });
 
 app.get("/science",(req,res)=>{
-  res.render("./phd_web/courses/science");
+  res.render("phd_web/courses/science");
 });
 
 app.get("/coursework",(req,res)=>{
@@ -111,11 +122,11 @@ app.get("/coursework",(req,res)=>{
 });
 
 app.get("/dissertation",(req,res)=>{
-  res.render("./phd_web/services/dissertation");
+  res.render("phd_web/services/dissertation");
 });
 
 app.get("/editing",(req,res)=>{
-  res.render("./phd_web/services/editing");
+  res.render("phd_web/services/editing");
 });
 
 app.use(cors({
@@ -123,9 +134,16 @@ app.use(cors({
   credentials: true
 }));
 
+app.get("/", (req, res) => {
+  console.log("➡️ / route hit ✅"); // log in terminal
+  res.send("✅ Server is working");
+});
 
 
-app.listen(8080,(req,res)=>{
-  console.log("server is listening to port 8080");
+console.log("Views path 👉", app.get("views"));
+
+
+app.listen(4500,(req,res)=>{
+  console.log("server is listening to port 4500");
 });
 
