@@ -28,10 +28,10 @@ app.get("*", (req, res) => {
 //   next();
 // });
 
-app.use((req, res, next) => {
-  console.log(`➡️ Incoming: ${req.method} ${req.url}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`➡️ Incoming: ${req.method} ${req.url}`);
+//   next();
+// });
 
 
 
@@ -45,6 +45,16 @@ app.use('/api/auth', authRoutes);
 // app.post("/api/auth/register", (req, res) => {
 //   res.send("✅ It works!");
 // });
+const path = require('path');
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '..', 'build')));
+
+// The "catchall" handler: for any request that doesn't
+// match an API route, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+});
 
 // Start server
 app.listen(8080, () => {
