@@ -163,52 +163,50 @@ const ejsMate = require("ejs-mate");
 const path = require("path");
 const Country = require("./models/Country");
 const methodOverride = require("method-override");
+//const {countrySchema}=require("./schema.js");
 const Contact = require("./models/contact");
-const cors = require("cors");
+const cors = require('cors');
 
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const flash = require("connect-flash");
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
-// ✅ Connect to MongoDB
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/countryList");
+  await mongoose.connect('mongodb://127.0.0.1:27017/countryList');
 }
 main().catch(err => console.log(err));
 
-// ✅ View engine setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.engine("ejs", ejsMate);
+// app.set("views", path.join(__dirname, "..", "views"));
 
-// ✅ Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 app.use(methodOverride("_method"));
+app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
-app.use(cookieParser("NotSoSecret"));
+app.use(express.json());
+// app.use(bodyParser.json());
+app.use(cookieParser('NotSoSecret'));
 app.use(session({
-  secret: "something",
+  secret: 'something',
   cookie: { maxAge: 60000 },
   resave: true,
   saveUninitialized: true
 }));
 app.use(flash());
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: 'http://localhost:3000',
   credentials: true
 }));
 
-// ✅ Flash messages
+app.get("/", (req, res) => {
+  console.log("✅ / route hit");
+  res.send("✅ Server is working properly");
+});
+
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   next();
-});
-
-// ✅ Routes
-app.get("/", (req, res) => {
-  console.log("✅ / route hit");
-  res.send("✅ EJS Server is working properly");
 });
 
 app.get("/home", (req, res) => {
@@ -227,7 +225,9 @@ app.get("/country", (req, res) => {
 app.get("/country/:name", async (req, res) => {
   const countryName = req.params.name.toLowerCase();
   const country = await Country.findOne({ name: countryName });
-  if (!country) return res.status(404).send("Country not found");
+  if (!country) {
+    return res.status(404).send("Country not found");
+  }
   res.render("phd_web/country", { country });
 });
 
@@ -235,29 +235,52 @@ app.get("/contact", (req, res) => {
   res.render("phd_web/contact");
 });
 
+app.get("/privacy", (req, res) => {
+  res.render("phd_web/privacy");
+});
+
+app.get("/terms", (req, res) => {
+  res.render("phd_web/terms");
+});
+
 app.post("/contact", async (req, res) => {
-  console.log("📩 Contact form submitted");
+  console.log("at contact page");
   const contact = new Contact(req.body);
   await contact.save();
   req.flash("success", "Data saved! Rest assured our team will contact you soon!");
   res.redirect("/home");
 });
 
-app.get("/privacy", (req, res) => res.render("phd_web/privacy"));
-app.get("/terms", (req, res) => res.render("phd_web/terms"));
+// app.get('/signup', (req, res) => {
+//   res.redirect('http://localhost:3000/signup');
+// });
 
-app.get("/engineering", (req, res) => res.render("phd_web/courses/engineering"));
-app.get("/humanities", (req, res) => res.render("phd_web/courses/humanities"));
-app.get("/science", (req, res) => res.render("phd_web/courses/science"));
-app.get("/coursework", (req, res) => res.render("phd_web/services/coursework"));
-app.get("/dissertation", (req, res) => res.render("phd_web/services/dissertation"));
-app.get("/editing", (req, res) => res.render("phd_web/services/editing"));
-
-// ✅ No React build serving here – only EJS
-console.log("Views path 👉", app.get("views"));
-
-// ✅ Start server
-app.listen(4500, () => {
-  console.log("✅ EJS server is listening on port 4500");
+app.get("/engineering", (req, res) => {
+  res.render("phd_web/courses/engineering");
 });
 
+app.get("/humanities", (req, res) => {
+  res.render("phd_web/courses/humanities");
+});
+
+app.get("/science", (req, res) => {
+  res.render("phd_web/courses/science");
+});
+
+app.get("/coursework", (req, res) => {
+  res.render("./phd_web/services/coursework");
+});
+
+app.get("/dissertation", (req, res) => {
+  res.render("phd_web/services/dissertation");
+});
+
+app.get("/editing", (req, res) => {
+  res.render("phd_web/services/editing");
+});
+
+console.log("Views path 👉", app.get("views"));
+
+app.listen(4500, (req, res) => {
+  console.log("server is listening to port 4500");
+});
