@@ -41,6 +41,11 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 app.get("/", (req, res) => {
   console.log("✅ / route hit");
   res.send("✅ Server is working properly");
@@ -100,10 +105,10 @@ app.post("/contact",async(req,res)=>{
  res.redirect("/home");
 });
 
-app.get('/signup', (req, res) => {
-  // redirect user to React app signup page
-  res.redirect('http://localhost:3000/signup');
-});
+// app.get('/signup', (req, res) => {
+//   // redirect user to React app signup page
+//   res.redirect('http://localhost:3000/signup');
+// });
 
 app.get("/engineering",(req,res)=>{
   res.render("phd_web/courses/engineering");
@@ -129,25 +134,19 @@ app.get("/editing",(req,res)=>{
   res.render("phd_web/services/editing");
 });
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
 
-app.get("/", (req, res) => {
-  console.log("➡️ / route hit ✅"); // log in terminal
-  res.send("✅ Server is working");
-});
+// app.get("/", (req, res) => {
+//   console.log("➡️ / route hit ✅"); // log in terminal
+//   res.send("✅ Server is working");
+// });
 
 // const path = require('path');
 
-// Serve React static files
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
-
-// Catch-all route to serve React frontend
+app.use(express.static(path.join(__dirname, 'build')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
 
 console.log("Views path 👉", app.get("views"));
 
