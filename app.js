@@ -163,14 +163,14 @@ const ejsMate = require("ejs-mate");
 const path = require("path");
 const Country = require("./models/Country");
 const methodOverride = require("method-override");
-//const {countrySchema}=require("./schema.js");
 const Contact = require("./models/contact");
-const cors = require('cors');
+const cors = require("cors");
 
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
 
+// Connect to MongoDB
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/countryList');
 }
@@ -178,17 +178,15 @@ main().catch(err => console.log(err));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-// app.set("views", path.join(__dirname, "..", "views"));
+app.engine("ejs", ejsMate);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json());
-// app.use(bodyParser.json());
-app.use(cookieParser('NotSoSecret'));
+app.use(cookieParser("NotSoSecret"));
 app.use(session({
-  secret: 'something',
+  secret: "something",
   cookie: { maxAge: 60000 },
   resave: true,
   saveUninitialized: true
@@ -199,88 +197,52 @@ app.use(cors({
   credentials: true
 }));
 
-app.get("/", (req, res) => {
-  console.log("✅ / route hit");
-  res.send("✅ Server is working properly");
-});
-
+// Flash middleware
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   next();
 });
 
-app.get("/home", (req, res) => {
-  res.render("phd_web/home");
-});
-
-app.get("/about", (req, res) => {
-  console.log("➡️ /about route hit");
-  res.render("phd_web/about");
-});
-
-app.get("/country", (req, res) => {
-  res.render("phd_web/countryList");
-});
+// EJS routes
+app.get("/home", (req, res) => res.render("phd_web/home"));
+app.get("/about", (req, res) => res.render("phd_web/about"));
+app.get("/country", (req, res) => res.render("phd_web/countryList"));
 
 app.get("/country/:name", async (req, res) => {
   const countryName = req.params.name.toLowerCase();
   const country = await Country.findOne({ name: countryName });
-  if (!country) {
-    return res.status(404).send("Country not found");
-  }
+  if (!country) return res.status(404).send("Country not found");
   res.render("phd_web/country", { country });
 });
 
-app.get("/contact", (req, res) => {
-  res.render("phd_web/contact");
-});
-
-app.get("/privacy", (req, res) => {
-  res.render("phd_web/privacy");
-});
-
-app.get("/terms", (req, res) => {
-  res.render("phd_web/terms");
-});
+app.get("/contact", (req, res) => res.render("phd_web/contact"));
+app.get("/privacy", (req, res) => res.render("phd_web/privacy"));
+app.get("/terms", (req, res) => res.render("phd_web/terms"));
 
 app.post("/contact", async (req, res) => {
-  console.log("at contact page");
   const contact = new Contact(req.body);
   await contact.save();
   req.flash("success", "Data saved! Rest assured our team will contact you soon!");
   res.redirect("/home");
 });
 
-// app.get('/signup', (req, res) => {
-//   res.redirect('http://localhost:3000/signup');
-// });
+app.get("/engineering", (req, res) => res.render("phd_web/courses/engineering"));
+app.get("/humanities", (req, res) => res.render("phd_web/courses/humanities"));
+app.get("/science", (req, res) => res.render("phd_web/courses/science"));
+app.get("/coursework", (req, res) => res.render("phd_web/services/coursework"));
+app.get("/dissertation", (req, res) => res.render("phd_web/services/dissertation"));
+app.get("/editing", (req, res) => res.render("phd_web/services/editing"));
 
-app.get("/engineering", (req, res) => {
-  res.render("phd_web/courses/engineering");
+// ======================
+// Serve React frontend build
+// ======================
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.get("/humanities", (req, res) => {
-  res.render("phd_web/courses/humanities");
-});
-
-app.get("/science", (req, res) => {
-  res.render("phd_web/courses/science");
-});
-
-app.get("/coursework", (req, res) => {
-  res.render("./phd_web/services/coursework");
-});
-
-app.get("/dissertation", (req, res) => {
-  res.render("phd_web/services/dissertation");
-});
-
-app.get("/editing", (req, res) => {
-  res.render("phd_web/services/editing");
-});
-
-console.log("Views path 👉", app.get("views"));
-
-app.listen(4500, (req, res) => {
-  console.log("server is listening to port 4500");
+const PORT = process.env.PORT || 4500;
+app.listen(PORT, () => {
+  console.log(`✅ Server is listening on port ${PORT}`);
 });
