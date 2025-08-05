@@ -139,6 +139,15 @@ app.get("/", (req, res) => {
   res.send("✅ Server is working");
 });
 
+// const path = require('path');
+
+// Serve React static files
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// Catch-all route to serve React frontend
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
 
 console.log("Views path 👉", app.get("views"));
 
